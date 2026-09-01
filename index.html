@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Raio-X do Posto | Grupo CRP</title>
+<meta name="description" content="Responda algumas perguntas rápidas e descubra quais novas fontes de receita podem fazer sentido para o seu posto: CapaXero, CRP Charge e CRP Tanque.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <div class="shell">
+    <header class="topbar">
+      <div class="logo">
+        <svg class="mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M4 28L16 16L24 24L36 8" stroke="url(#g1)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M26 8H36V18" stroke="url(#g1)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs>
+            <linearGradient id="g1" x1="4" y1="28" x2="36" y2="8" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#2F6BFF"/>
+              <stop offset="1" stop-color="#8FC0FF"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        GRUPO <b>CRP</b>
+      </div>
+      <nav class="social">
+        <a href="https://instagram.com/grupocrp_" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://linkedin.com/company/grupocrp" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://grupocrp.com.br" target="_blank" rel="noopener">grupocrp.com.br</a>
+      </nav>
+    </header>
+
+    <main>
+      <div class="progress-wrap" id="progressWrap" hidden>
+        <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+        <div class="progress-label"><span id="progressLabel">Passo 1</span><span id="progressPct">0%</span></div>
+      </div>
+
+      <div class="center-col" id="app">
+        <!-- intro -->
+        <section class="hero" id="intro">
+          <span class="eyebrow">Grupo CRP · Diagnóstico gratuito</span>
+          <h1>Quanto o seu posto ainda pode faturar <span class="accent">além do combustível?</span></h1>
+          <p class="lead">Responda algumas perguntas rápidas sobre a sua operação e descubra, na hora, quais novas fontes de receita fazem sentido para o seu posto.</p>
+          <div class="meta-pill">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="#6fa8ff" stroke-width="2"/><path d="M12 7v5l3.5 2" stroke="#6fa8ff" stroke-width="2" stroke-linecap="round"/></svg>
+            Tempo de preenchimento: menos de 2 minutos
+          </div>
+          <div class="solutions-preview">
+            <div class="chip">CapaXero<span>Fluxo de motos</span></div>
+            <div class="chip">CRP Charge<span>Recarga elétrica</span></div>
+            <div class="chip">CRP Tanque<span>Novas receitas</span></div>
+          </div>
+          <button class="btn btn-primary" id="startBtn">Fazer o Raio-X do meu posto</button>
+        </section>
+
+        <!-- wizard steps render here -->
+        <section class="step" id="stepView" hidden></section>
+
+        <!-- results -->
+        <section id="resultsView" hidden></section>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="flinks">
+        <a href="https://instagram.com/grupocrp_" target="_blank" rel="noopener">@grupocrp_</a>
+        <a href="https://linkedin.com/company/grupocrp" target="_blank" rel="noopener">@grupocrp</a>
+        <a href="https://grupocrp.com.br" target="_blank" rel="noopener">grupocrp.com.br</a>
+      </div>
+      <div>© <span id="year"></span> Grupo CRP — CapaXero · CRP Charge · CRP Tanque</div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
