@@ -95,6 +95,7 @@ body {
   width: 30px;
   height: 30px;
   flex: none;
+  object-fit: contain;
 }
 .logo b { color: var(--blue-light); }
 
