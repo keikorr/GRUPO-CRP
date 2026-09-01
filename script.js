@@ -6,7 +6,7 @@
    do Grupo CRP (formato internacional, só dígitos) para ativar
    o botão final "Falar com um especialista".
    ============================================================ */
-const WHATSAPP_NUMBER = "5511999999999"; // TODO: configurar número real
+const WHATSAPP_NUMBER = "5585988650401";
 
 /* ---------------- dados do formulário ---------------- */
 
