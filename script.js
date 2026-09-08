@@ -390,6 +390,20 @@ function levelFromPct(pct) {
   return { key: "medio", label: "Médio" };
 }
 
+// A solução com maior potencial nunca aparece como "Médio": garante que
+// pelo menos uma fique em Alto ou Muito Alto, para o resultado nunca soar fraco.
+function computeLevels(pct) {
+  const levels = {};
+  Object.keys(pct).forEach((sol) => {
+    levels[sol] = levelFromPct(pct[sol]);
+  });
+  const topSol = Object.entries(pct).sort((a, b) => b[1] - a[1])[0][0];
+  if (levels[topSol].key === "medio") {
+    levels[topSol] = { key: "alto", label: "Alto" };
+  }
+  return levels;
+}
+
 /* ---------------- resultados ---------------- */
 function showResults() {
   stepView.hidden = true;
@@ -397,6 +411,7 @@ function showResults() {
   resultsView.hidden = false;
 
   const pct = computeScoresPrecise();
+  const levels = computeLevels(pct);
   const ranked = Object.entries(pct).sort((a, b) => b[1] - a[1]);
   const topSolution = SOLUTIONS[ranked[0][0]].title;
 
@@ -404,7 +419,7 @@ function showResults() {
 
   const cardsHtml = ranked
     .map(([sol, p]) => {
-      const level = levelFromPct(p);
+      const level = levels[sol];
       const info = SOLUTIONS[sol];
       return `
         <div class="result-card accent-${info.accent}">
@@ -528,6 +543,7 @@ function submitToSheet(pct, topSolution) {
 }
 
 function buildWhatsAppMessage(pct) {
+  const levels = computeLevels(pct);
   const lines = [
     `Olá! Acabei de fazer o Raio-X do Posto (Grupo CRP).`,
     `Nome: ${answers.nome || "-"}`,
@@ -535,9 +551,9 @@ function buildWhatsAppMessage(pct) {
     `Cidade/UF: ${answers.cidade || "-"}`,
     ``,
     `Resultado:`,
-    `- CapaXero: ${pct.capaxero}% (${levelFromPct(pct.capaxero).label})`,
-    `- CRP Charge: ${pct.charge}% (${levelFromPct(pct.charge).label})`,
-    `- CRP Tank: ${pct.tanque}% (${levelFromPct(pct.tanque).label})`,
+    `- CapaXero: ${pct.capaxero}% (${levels.capaxero.label})`,
+    `- CRP Charge: ${pct.charge}% (${levels.charge.label})`,
+    `- CRP Tank: ${pct.tanque}% (${levels.tanque.label})`,
     ``,
     `Quero receber a análise completa e falar com um especialista.`,
   ];

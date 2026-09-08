@@ -6,3 +6,6 @@ Design sem nome.png
 # OS / editor
 .DS_Store
 Thumbs.db
+
+.vercel
+.env*
