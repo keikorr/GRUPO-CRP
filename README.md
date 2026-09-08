@@ -4,7 +4,7 @@ Landing page responsiva com formulário multi-etapas ("Raio-X do Posto"). O visi
 
 - **CapaXero** — receita a partir do fluxo de motos
 - **CRP Charge** — infraestrutura de recarga para veículos elétricos
-- **CRP Tanque** — novas fontes de receita e infraestrutura para o posto
+- **CRP Tank** — novas fontes de receita e infraestrutura para o posto
 
 ## Stack
 

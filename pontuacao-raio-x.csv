@@ -1,0 +1,65 @@
+﻿Secao,Pergunta,Peso da pergunta,Opcao,CapaXero,CRP Charge,CRP Tank
+Seus dados,Qual o seu papel no posto?,Qualificação (não pontua),Proprietário,,,
+Seus dados,Qual o seu papel no posto?,Qualificação (não pontua),Sócio,,,
+Seus dados,Qual o seu papel no posto?,Qualificação (não pontua),Gestor,,,
+Seus dados,Qual o seu papel no posto?,Qualificação (não pontua),Diretor,,,
+Seus dados,Qual o seu papel no posto?,Qualificação (não pontua),Outro,,,
+Sobre a operação,"Em média, quantos veículos passam ou abastecem no posto por dia?",Médio,Até 300,0,0,0
+Sobre a operação,"Em média, quantos veículos passam ou abastecem no posto por dia?",Médio,De 301 a 700,0,1,1
+Sobre a operação,"Em média, quantos veículos passam ou abastecem no posto por dia?",Médio,De 701 a 1.500,1,1,2
+Sobre a operação,"Em média, quantos veículos passam ou abastecem no posto por dia?",Médio,De 1.501 a 3.000,1,2,3
+Sobre a operação,"Em média, quantos veículos passam ou abastecem no posto por dia?",Médio,Mais de 3.000,2,3,4
+Sobre a operação,"Em média, quantos veículos passam ou abastecem no posto por dia?",Médio,Não sei informar,0,0,0
+Sobre a operação,Como você considera o fluxo de motos no posto?,Alto (CapaXero),Baixo,0,0,0
+Sobre a operação,Como você considera o fluxo de motos no posto?,Alto (CapaXero),Médio,2,0,1
+Sobre a operação,Como você considera o fluxo de motos no posto?,Alto (CapaXero),Alto,4,0,1
+Sobre a operação,Como você considera o fluxo de motos no posto?,Alto (CapaXero),Muito alto,6,0,2
+Sobre a operação,O posto funciona 24 horas?,Médio,Sim,2,2,2
+Sobre a operação,O posto funciona 24 horas?,Médio,Não,0,0,0
+Sobre a operação,O posto possui loja de conveniência?,Baixo,Sim,1,1,2
+Sobre a operação,O posto possui loja de conveniência?,Baixo,Não,0,0,0
+Sobre a operação,Existe área disponível para instalação de novos equipamentos ou serviços?,Alto (gatilho estrutural),"Sim, bastante espaço",4,4,4
+Sobre a operação,Existe área disponível para instalação de novos equipamentos ou serviços?,Alto (gatilho estrutural),"Sim, espaço limitado",3,3,3
+Sobre a operação,Existe área disponível para instalação de novos equipamentos ou serviços?,Alto (gatilho estrutural),Talvez,1,1,1
+Sobre a operação,Existe área disponível para instalação de novos equipamentos ou serviços?,Alto (gatilho estrutural),Não sei,0,0,0
+Sobre a operação,Existe área disponível para instalação de novos equipamentos ou serviços?,Alto (gatilho estrutural),Não,0,0,0
+Sobre a operação,O posto possui estacionamento ou área onde um veículo possa permanecer por 20 a 60 minutos?,Alto (CRP Charge),Sim,0,4,1
+Sobre a operação,O posto possui estacionamento ou área onde um veículo possa permanecer por 20 a 60 minutos?,Alto (CRP Charge),Não,0,0,0
+Sobre a operação,O posto possui estacionamento ou área onde um veículo possa permanecer por 20 a 60 minutos?,Alto (CRP Charge),Depende do horário,0,1,0
+Sobre a operação,Já existe carregador para veículos elétricos no local?,Alto (CRP Charge),Sim e está em operação,0,0,0
+Sobre a operação,Já existe carregador para veículos elétricos no local?,Alto (CRP Charge),"Sim, mas é pouco utilizado",0,3,0
+Sobre a operação,Já existe carregador para veículos elétricos no local?,Alto (CRP Charge),Não,0,4,0
+Sobre a operação,Já existe carregador para veículos elétricos no local?,Alto (CRP Charge),Estamos avaliando instalar,0,4,0
+Sobre a operação,Como é o fornecimento de energia do posto?,Médio (CRP Charge),Temos boa disponibilidade de energia,0,3,1
+Sobre a operação,Como é o fornecimento de energia do posto?,Médio (CRP Charge),Temos limitações de carga,0,0,0
+Sobre a operação,Como é o fornecimento de energia do posto?,Médio (CRP Charge),Não sei informar,0,1,0
+Contexto e oportunidades,O posto atende ou está próximo de algum desses fluxos?,Médio (por fluxo),Condomínios,0,2,0
+Contexto e oportunidades,O posto atende ou está próximo de algum desses fluxos?,Médio (por fluxo),Shopping ou comércio,0,1,1
+Contexto e oportunidades,O posto atende ou está próximo de algum desses fluxos?,Médio (por fluxo),Supermercado,0,0,1
+Contexto e oportunidades,O posto atende ou está próximo de algum desses fluxos?,Médio (por fluxo),Academia,0,1,0
+Contexto e oportunidades,O posto atende ou está próximo de algum desses fluxos?,Médio (por fluxo),Hospital ou clínica,0,2,0
+Contexto e oportunidades,O posto atende ou está próximo de algum desses fluxos?,Médio (por fluxo),Rodovia,1,0,2
+Contexto e oportunidades,O posto atende ou está próximo de algum desses fluxos?,Médio (por fluxo),Centro empresarial,0,2,0
+Contexto e oportunidades,O posto atende ou está próximo de algum desses fluxos?,Médio (por fluxo),Restaurantes,2,0,0
+Contexto e oportunidades,O posto atende ou está próximo de algum desses fluxos?,Médio (por fluxo),Motoristas de aplicativo,2,0,0
+Contexto e oportunidades,O posto atende ou está próximo de algum desses fluxos?,Médio (por fluxo),Motoboys,3,0,0
+Contexto e oportunidades,O posto atende ou está próximo de algum desses fluxos?,Médio (por fluxo),Frotas,0,1,2
+Contexto e oportunidades,O posto atende ou está próximo de algum desses fluxos?,Médio (por fluxo),Nenhum desses,0,0,0
+Contexto e oportunidades,O posto atende ou está próximo de algum desses fluxos?,Médio (por fluxo),Outros,0,0,0
+Contexto e oportunidades,Qual destas oportunidades mais chama sua atenção hoje?,Alto (interesse declarado),Gerar receita com o fluxo de motos,5,0,0
+Contexto e oportunidades,Qual destas oportunidades mais chama sua atenção hoje?,Alto (interesse declarado),Entrar no mercado de recarga elétrica,0,5,0
+Contexto e oportunidades,Qual destas oportunidades mais chama sua atenção hoje?,Alto (interesse declarado),Criar novas fontes de receita dentro do posto,1,1,5
+Contexto e oportunidades,Qual destas oportunidades mais chama sua atenção hoje?,Alto (interesse declarado),Modernizar a operação,1,1,2
+Contexto e oportunidades,Qual destas oportunidades mais chama sua atenção hoje?,Alto (interesse declarado),Quero entender todas as possibilidades,1,1,1
+Contexto e oportunidades,"Se houver uma oportunidade viável para o seu posto, qual seria sua intenção?",Qualificação (não pontua),Quero investir,,,
+Contexto e oportunidades,"Se houver uma oportunidade viável para o seu posto, qual seria sua intenção?",Qualificação (não pontua),Tenho interesse em parceria,,,
+Contexto e oportunidades,"Se houver uma oportunidade viável para o seu posto, qual seria sua intenção?",Qualificação (não pontua),Quero entender modelos sem precisar operar,,,
+Contexto e oportunidades,"Se houver uma oportunidade viável para o seu posto, qual seria sua intenção?",Qualificação (não pontua),Ainda estou avaliando,,,
+Contexto e oportunidades,Em quanto tempo você gostaria de colocar uma nova operação para funcionar?,Qualificação (não pontua),Imediatamente,,,
+Contexto e oportunidades,Em quanto tempo você gostaria de colocar uma nova operação para funcionar?,Qualificação (não pontua),Nos próximos 3 meses,,,
+Contexto e oportunidades,Em quanto tempo você gostaria de colocar uma nova operação para funcionar?,Qualificação (não pontua),De 3 a 6 meses,,,
+Contexto e oportunidades,Em quanto tempo você gostaria de colocar uma nova operação para funcionar?,Qualificação (não pontua),Nos próximos 12 meses,,,
+Contexto e oportunidades,Em quanto tempo você gostaria de colocar uma nova operação para funcionar?,Qualificação (não pontua),Apenas pesquisando por enquanto,,,
+
+,,,PONTUACAO MAXIMA POSSIVEL (soma dos maiores valores de cada pergunta)
+,,,Total maximo,28,35,27

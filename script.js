@@ -8,6 +8,11 @@
    ============================================================ */
 const WHATSAPP_NUMBER = "5585988650401";
 
+/* Coleta de respostas (Google Sheets)
+   Cole aqui a URL de implantação do Apps Script (veja google-apps-script.gs
+   e as instruções em SETUP-COLETA-RESPOSTAS.md). Deixe "" para desativar o envio. */
+const SHEETS_WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbzNlxSbiYKrlaOtvfICHhIBElWqpxqzajypS9qs6GByjDdi2bnxqIeUFz1KnmOQOmyx/exec";
+
 /* ---------------- dados do formulário ---------------- */
 
 // Passo 0 (especial): campos de texto do lead
@@ -26,6 +31,7 @@ const QUESTIONS = [
     type: "radio",
     q: "Qual o seu papel no posto?",
     options: ["Proprietário", "Sócio", "Gestor", "Diretor", "Outro"],
+    weight: "Qualificação (não pontua)",
   },
   {
     id: "q6_veiculos",
@@ -33,10 +39,11 @@ const QUESTIONS = [
     type: "radio",
     q: "Em média, quantos veículos passam ou abastecem no posto por dia?",
     options: ["Até 300", "De 301 a 700", "De 701 a 1.500", "De 1.501 a 3.000", "Mais de 3.000", "Não sei informar"],
+    weight: "Médio",
     score: {
-      capaxero: [0, 1, 1, 2, 3, 0],
+      capaxero: [0, 0, 1, 1, 2, 0],
       charge: [0, 1, 1, 2, 3, 0],
-      tanque: [0, 1, 2, 3, 3, 0],
+      tanque: [0, 1, 2, 3, 4, 0],
     },
   },
   {
@@ -45,6 +52,7 @@ const QUESTIONS = [
     type: "radio",
     q: "Como você considera o fluxo de motos no posto?",
     options: ["Baixo", "Médio", "Alto", "Muito alto"],
+    weight: "Alto (CapaXero)",
     score: {
       capaxero: [0, 2, 4, 6],
       charge: [0, 0, 0, 0],
@@ -57,7 +65,8 @@ const QUESTIONS = [
     type: "radio",
     q: "O posto funciona 24 horas?",
     options: ["Sim", "Não"],
-    score: { capaxero: [1, 0], charge: [2, 0], tanque: [2, 0] },
+    weight: "Médio",
+    score: { capaxero: [2, 0], charge: [2, 0], tanque: [2, 0] },
   },
   {
     id: "q9_conveniencia",
@@ -65,6 +74,7 @@ const QUESTIONS = [
     type: "radio",
     q: "O posto possui loja de conveniência?",
     options: ["Sim", "Não"],
+    weight: "Baixo",
     score: { capaxero: [1, 0], charge: [1, 0], tanque: [2, 0] },
   },
   {
@@ -73,10 +83,11 @@ const QUESTIONS = [
     type: "radio",
     q: "Existe área disponível para instalação de novos equipamentos ou serviços?",
     options: ["Sim, bastante espaço", "Sim, espaço limitado", "Talvez", "Não sei", "Não"],
+    weight: "Alto (gatilho estrutural)",
     score: {
-      capaxero: [3, 2, 1, 0, 0],
-      charge: [3, 2, 1, 0, 0],
-      tanque: [3, 2, 1, 0, 0],
+      capaxero: [4, 3, 1, 0, 0],
+      charge: [4, 3, 1, 0, 0],
+      tanque: [4, 3, 1, 0, 0],
     },
   },
   {
@@ -85,7 +96,8 @@ const QUESTIONS = [
     type: "radio",
     q: "O posto possui estacionamento ou área onde um veículo possa permanecer por 20 a 60 minutos?",
     options: ["Sim", "Não", "Depende do horário"],
-    score: { capaxero: [0, 0, 0], charge: [3, 0, 1], tanque: [1, 0, 0] },
+    weight: "Alto (CRP Charge)",
+    score: { capaxero: [0, 0, 0], charge: [4, 0, 1], tanque: [1, 0, 0] },
   },
   {
     id: "q12_carregador",
@@ -93,7 +105,8 @@ const QUESTIONS = [
     type: "radio",
     q: "Já existe carregador para veículos elétricos no local?",
     options: ["Sim e está em operação", "Sim, mas é pouco utilizado", "Não", "Estamos avaliando instalar"],
-    score: { capaxero: [0, 0, 0, 0], charge: [0, 2, 3, 3], tanque: [0, 0, 0, 0] },
+    weight: "Alto (CRP Charge)",
+    score: { capaxero: [0, 0, 0, 0], charge: [0, 3, 4, 4], tanque: [0, 0, 0, 0] },
   },
   {
     id: "q13_energia",
@@ -101,6 +114,7 @@ const QUESTIONS = [
     type: "radio",
     q: "Como é o fornecimento de energia do posto?",
     options: ["Temos boa disponibilidade de energia", "Temos limitações de carga", "Não sei informar"],
+    weight: "Médio (CRP Charge)",
     score: { capaxero: [0, 0, 0], charge: [3, 0, 1], tanque: [1, 0, 0] },
   },
   {
@@ -115,6 +129,7 @@ const QUESTIONS = [
       "Motoristas de aplicativo", "Motoboys", "Frotas", "Nenhum desses", "Outros",
     ],
     // pontos por opção marcada
+    weight: "Médio (por fluxo)",
     score: {
       capaxero: [0, 0, 0, 0, 0, 1, 0, 2, 2, 3, 0, 0, 0],
       charge: [2, 1, 0, 1, 2, 0, 2, 0, 0, 0, 1, 0, 0],
@@ -133,10 +148,11 @@ const QUESTIONS = [
       "Modernizar a operação",
       "Quero entender todas as possibilidades",
     ],
+    weight: "Alto (interesse declarado)",
     score: {
-      capaxero: [4, 0, 1, 1, 1],
-      charge: [0, 4, 1, 1, 1],
-      tanque: [0, 0, 4, 2, 1],
+      capaxero: [5, 0, 1, 1, 1],
+      charge: [0, 5, 1, 1, 1],
+      tanque: [0, 0, 5, 2, 1],
     },
   },
   {
@@ -145,6 +161,7 @@ const QUESTIONS = [
     type: "radio",
     q: "Se houver uma oportunidade viável para o seu posto, qual seria sua intenção?",
     options: ["Quero investir", "Tenho interesse em parceria", "Quero entender modelos sem precisar operar", "Ainda estou avaliando"],
+    weight: "Qualificação (não pontua)",
   },
   {
     id: "q17_prazo",
@@ -152,21 +169,41 @@ const QUESTIONS = [
     type: "radio",
     q: "Em quanto tempo você gostaria de colocar uma nova operação para funcionar?",
     options: ["Imediatamente", "Nos próximos 3 meses", "De 3 a 6 meses", "Nos próximos 12 meses", "Apenas pesquisando por enquanto"],
+    weight: "Qualificação (não pontua)",
   },
 ];
 
 const SOLUTIONS = {
   capaxero: {
     title: "CapaXero",
-    desc: "Higienização e serviços de autoatendimento para motociclistas — transforma o fluxo de motos do posto em nova receita recorrente.",
+    tagline: "Não é só uma máquina. É um serviço que pode virar negócio.",
+    desc: "Higienização de capacetes para motociclistas: mais uma fonte de receita onde já existe fluxo — elimina até 99,9% de bactérias e odores em cerca de 8 minutos, por autoatendimento.",
+    accent: "capaxero",
+    cta: "Conheça o modelo",
+    url: "https://grupocrp.com.br/capaxero",
+    img: "assets/capaxero-photo.jpg",
+    icon: `<svg viewBox="0 0 24 24" fill="none"><path d="M12 3v4M12 17v4M5 5l2.8 2.8M16.2 16.2L19 19M3 12h4M17 12h4M5 19l2.8-2.8M16.2 7.8L19 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>`,
   },
   charge: {
     title: "CRP Charge",
-    desc: "Infraestrutura e operação para recarga de veículos elétricos, de 22 kW a 120 kW, com gestão inteligente.",
+    tagline: "Carregamento elétrico sem complicação.",
+    desc: "A solução completa em um único parceiro: equipamentos, projeto, infraestrutura, instalação, gestão, operação, monitoramento e suporte para recarga de veículos elétricos.",
+    accent: "charge",
+    cta: "Solicitar projeto",
+    url: "https://grupocrp.com.br/crp-charge",
+    img: "assets/crp-charge-photo.jpg",
+    imgFit: "contain",
+    icon: `<svg viewBox="0 0 24 24" fill="none"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg>`,
   },
   tanque: {
-    title: "CRP Tanque",
-    desc: "Novas soluções de receita e infraestrutura dentro do próprio posto, unindo tecnologia e inteligência de negócio.",
+    title: "CRP Tank",
+    tagline: "Seu posto pode ir além da bomba.",
+    desc: "Infraestrutura para postos que querem evoluir: modernização da operação, mais eficiência para reduzir perdas e expansão com novas fontes de receita.",
+    accent: "tanque",
+    cta: "Conheça a CRP Tank",
+    url: "https://grupocrp.com.br/crp-tank",
+    img: "assets/crp-tank-photo.jpg",
+    icon: `<svg viewBox="0 0 24 24" fill="none"><path d="M4 19V9l8-5 8 5v10" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 19v-6h6v6" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>`,
   },
 };
 
@@ -350,8 +387,7 @@ function maxForCheckbox(points) {
 function levelFromPct(pct) {
   if (pct >= 75) return { key: "muito-alto", label: "Muito Alto" };
   if (pct >= 50) return { key: "alto", label: "Alto" };
-  if (pct >= 25) return { key: "medio", label: "Médio" };
-  return { key: "baixo", label: "Baixo" };
+  return { key: "medio", label: "Médio" };
 }
 
 /* ---------------- resultados ---------------- */
@@ -364,18 +400,26 @@ function showResults() {
   const ranked = Object.entries(pct).sort((a, b) => b[1] - a[1]);
   const topSolution = SOLUTIONS[ranked[0][0]].title;
 
+  submitToSheet(pct, topSolution);
+
   const cardsHtml = ranked
     .map(([sol, p]) => {
       const level = levelFromPct(p);
       const info = SOLUTIONS[sol];
       return `
-        <div class="result-card">
+        <div class="result-card accent-${info.accent}">
+          <div class="rc-media${info.imgFit === "contain" ? " rc-media--pack" : ""}"><img src="${info.img}" alt="${info.title}" loading="lazy"></div>
+          <div class="rc-body">
           <div class="rc-top">
-            <div class="rc-title">${info.title}</div>
+            <div class="rc-title"><span class="rc-icon">${info.icon}</span>${info.title}</div>
             <span class="level-badge level-${level.key}">${level.label}</span>
           </div>
           <p class="rc-desc">${info.desc}</p>
           <div class="meter"><div style="width:${p}%"></div></div>
+          <a class="rc-link" href="${info.url}" target="_blank" rel="noopener">${info.cta}
+            <svg viewBox="0 0 24 24" fill="none"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          </div>
         </div>
       `;
     })
@@ -389,6 +433,11 @@ function showResults() {
       <span class="badge-ok">✓ Raio-X concluído</span>
       <h2>Seu posto tem maior potencial em <span style="color:var(--blue-light)">${topSolution}</span></h2>
       <p>Olá, <span class="name">${escapeHtml(answers.nome || "")}</span>! O principal ativo do <strong>${escapeHtml(answers.posto || "seu posto")}</strong> você já possui: fluxo. Veja abaixo o potencial estimado para cada solução do Grupo CRP.</p>
+      <div class="event-invite">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s7-6.1 7-11.5A7 7 0 0 0 5 9.5C5 14.9 12 21 12 21Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="12" cy="9.5" r="2.4" stroke="currentColor" stroke-width="2"/></svg>
+        <span>Venha conhecer <strong>todas as soluções</strong> ao vivo no nosso estande na <strong>Expopostos</strong></span>
+        <span class="promo-badge">A72-1 · Testeira</span>
+      </div>
     </div>
     <div class="result-cards">${cardsHtml}</div>
     <div class="cta-block">
@@ -437,6 +486,47 @@ function computeScoresPrecise() {
   return pct;
 }
 
+/* ---------------- coleta de respostas (Google Sheets) ---------------- */
+function buildSheetPayload(pct, topSolution) {
+  const payload = {
+    "Data/Hora": new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }),
+    "Nome": answers.nome || "",
+    "Posto": answers.posto || "",
+    "Cidade/UF": answers.cidade || "",
+    "WhatsApp": answers.whatsapp || "",
+  };
+
+  QUESTIONS.forEach((q) => {
+    const val = answers[q.id];
+    if (q.type === "checkbox") {
+      const arr = Array.isArray(val) ? val : [];
+      payload[q.q] = arr.map((i) => q.options[i]).join("; ");
+    } else {
+      payload[q.q] = typeof val === "number" ? q.options[val] : "";
+    }
+  });
+
+  payload["CapaXero (%)"] = pct.capaxero;
+  payload["CRP Charge (%)"] = pct.charge;
+  payload["CRP Tank (%)"] = pct.tanque;
+  payload["Solução recomendada"] = topSolution;
+
+  return payload;
+}
+
+function submitToSheet(pct, topSolution) {
+  if (!SHEETS_WEBHOOK_URL) return;
+  const payload = buildSheetPayload(pct, topSolution);
+  fetch(SHEETS_WEBHOOK_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload),
+  }).catch(() => {
+    /* falha de rede não deve travar a experiência do lead */
+  });
+}
+
 function buildWhatsAppMessage(pct) {
   const lines = [
     `Olá! Acabei de fazer o Raio-X do Posto (Grupo CRP).`,
@@ -447,7 +537,7 @@ function buildWhatsAppMessage(pct) {
     `Resultado:`,
     `- CapaXero: ${pct.capaxero}% (${levelFromPct(pct.capaxero).label})`,
     `- CRP Charge: ${pct.charge}% (${levelFromPct(pct.charge).label})`,
-    `- CRP Tanque: ${pct.tanque}% (${levelFromPct(pct.tanque).label})`,
+    `- CRP Tank: ${pct.tanque}% (${levelFromPct(pct.tanque).label})`,
     ``,
     `Quero receber a análise completa e falar com um especialista.`,
   ];
